@@ -1,0 +1,22 @@
+<div class="single-activity" *ngIf="config">
+    <div class="single-activity__preview" *ngIf="!editMode; else editModeTemplate" (dblclick)="editMode = true;">
+        <div class="single-activity__preview__color" [style.backgroundColor]="config.color">
+
+        </div>
+        <div class="single-activity__preview__name">
+            {{config.name}}
+        </div>
+    </div>
+    <ng-template #editModeTemplate>
+        <div class="single-activity__edit" [formGroup]="activityFormGroup">
+            <label for="activity__color">Color:</label>
+            <input id="activity__color" type="color" formControlName="color">
+            <label for="activity__name">Name:</label>
+            <input id="activity__name" type="text" formControlName="name">
+
+            <button (click)="updateActivity.emit(config)">Save</button>
+            <button (click)="editMode = false; activityFormGroup.reset()">Abort</button>
+            <button (click)="deleteActivity.emit(config)">Delete Activity</button>
+        </div>
+    </ng-template>
+</div>

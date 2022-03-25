@@ -1,0 +1,21 @@
+<div class="dot-calendar" *ngIf="config">
+    <div class="hour-head">
+        <span *ngFor="let hour of config.hours">
+            {{hour}}
+        </span>
+    </div>
+    <div class="minute-head">
+        <span *ngFor="let minute of config.slots">
+            {{minute}}
+        </span>
+    </div>
+    <div class="dot-wrapper">
+        <ng-container *ngFor="let row of config.board; index as i">
+            <div class="dot-row">
+                <ng-container *ngFor="let dot of row; index as j">
+                    <app-dot (click)="colorAsCurrentlySelected(i, j)" [color]="dot.color || ''"></app-dot>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>

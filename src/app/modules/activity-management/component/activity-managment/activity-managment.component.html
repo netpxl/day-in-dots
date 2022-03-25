@@ -1,0 +1,12 @@
+<div class="activity-management">
+    <div class="activity-management__current-activities">
+        <div *ngFor="let activity of activities">
+            <app-single-activity 
+            [config]="activity" 
+            (deleteActivity)="onDeleteActivity($event)"
+            (updateActivity)="onUpdateActivity($event)"
+            (click)="setAsSelectedActivity(activity)"></app-single-activity>
+        </div>
+    </div>
+    <app-new-activity (newActivityAdded)="onNewActivityAdded($event)"></app-new-activity>
+</div>

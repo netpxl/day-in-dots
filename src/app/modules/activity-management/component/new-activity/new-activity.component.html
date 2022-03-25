@@ -1,0 +1,8 @@
+<div class="add-new-activity" [formGroup]="newActivityForm">
+    <button [disabled]="newActivityForm.invalid" (click)="addNewActivity()">+</button>
+    <label for="add-new-activity__color">Color:</label>
+    <input id="add-new-activity__color" type="color" formControlName="color">
+    <label for="add-new-activity__name">Name:</label>
+    <input id="add-new-activity__name" type="text" formControlName="name">
+    
+</div>

@@ -1,0 +1,50 @@
+:host {
+    --__gap: 8px;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.minute-head,
+.hour-head,
+.dot-wrapper,
+.dot-calendar,
+.dot-row {
+    display: grid;
+    gap: var(--__gap);
+}
+
+.minute-head,
+.dot-row {
+    column-gap: calc(3 * var(--__gap));
+    grid-template-columns: repeat(#{var(--__columns)}, 1fr);
+}
+
+.dot-calendar {
+    grid-template-rows: repeat(2, min-content);
+    grid-template-columns: repeat(2, min-content);
+}
+
+.minute-head {
+    grid-column: 2;
+    grid-row: 1;
+
+    > span {
+        text-align: center;
+    }
+}
+
+.hour-head {
+    grid-column: 1;
+    grid-row: 2;;
+
+    > span {
+        text-align: center;
+    }
+}
+
+.dot-wrapper {
+    grid-column: 2;
+    grid-row: 2;
+}
