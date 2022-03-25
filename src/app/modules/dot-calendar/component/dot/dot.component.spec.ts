@@ -8,9 +8,9 @@ describe('DotComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DotComponent ]
+      declarations: [DotComponent],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

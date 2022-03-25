@@ -4,18 +4,18 @@ import { ActivityInterface } from 'src/app/core/interfaces/activity.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-new-activity',
+  selector: 'did-new-activity',
   templateUrl: './new-activity.component.html',
-  styleUrls: ['./new-activity.component.scss']
+  styleUrls: ['./new-activity.component.scss'],
 })
 export class NewActivityComponent {
   newActivityForm: FormGroup = new FormGroup({
     color: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required])
-  }); 
+    name: new FormControl('', [Validators.required]),
+  });
 
   @Output()
-  newActivityAdded: EventEmitter<ActivityInterface> = new EventEmitter<ActivityInterface>();
+    newActivityAdded: EventEmitter<ActivityInterface> = new EventEmitter<ActivityInterface>();
 
   addNewActivity() {
     if (this.newActivityForm.invalid) {
@@ -23,13 +23,12 @@ export class NewActivityComponent {
     }
 
     const id = uuidv4();
-    const {color, name} = this.newActivityForm.value
+    const { color, name } = this.newActivityForm.value;
     this.newActivityAdded.emit({
       id,
       color,
-      name
-    })
+      name,
+    });
     this.newActivityForm.reset();
   }
-
 }

@@ -1,5 +1,15 @@
+:host {
+    --__flex-direction: column-reverse
+}
+
 .add-new-activity {
     display: flex;
-    flex-direction: row;
+    flex-direction: var(--__flex-direction);
     gap: 8px;
+}
+
+@media screen and (min-width: 800px) {
+    :host {
+        --__flex-direction: row;
+    }
 }

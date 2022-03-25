@@ -8,9 +8,9 @@ describe('SingleActivityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SingleActivityComponent ]
+      declarations: [SingleActivityComponent],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

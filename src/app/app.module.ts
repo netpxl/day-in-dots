@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './layout/login/login.component';
@@ -11,25 +12,27 @@ import { ActivityManagementModule } from './modules/activity-management/activity
 import { SharedModule } from './shared/shared.module';
 import { StoreService } from './shared/services/store.service.abstract';
 import { LocalStorageStoreService } from './shared/services/local-storage-store.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     DotCalendarModule,
     ActivityManagementModule,
+    AnalyticsModule,
     SharedModule,
     BrowserAnimationsModule,
   ],
   providers: [
-    {provide: StoreService, useClass: LocalStorageStoreService}
+    { provide: StoreService, useClass: LocalStorageStoreService },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -1,7 +1,8 @@
 export interface DotInterface {
-    id: string;
-    activityId?: string;
-    color?: string;
-    hour: number
-    slot: number
+  id: string;
+  name?: string;
+  activityId?: string;
+  color?: string;
+  hour: number
+  slot: number
 }

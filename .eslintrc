@@ -1,0 +1,21 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "airbnb-base",
+      "airbnb-typescript/base"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2021,
+      "sourceType": "module",
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+        "import/prefer-default-export": ["off"],
+        "no-underscore-dangle": ["off"],
+        "max-len": ["error", { "code": 140, "tabWidth": 4 }],
+        "no-plusplus": ["off"],
+        "no-param-reassign": ["off"],
+        "class-methods-use-this": ["off"]
+    }
+}

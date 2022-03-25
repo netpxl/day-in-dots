@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DotCalendarComponent } from './dot-calendar.component';
+import { BarChartComponent } from './bar-chart.component';
 
-describe('DotCalendarComponent', () => {
-  let component: DotCalendarComponent;
-  let fixture: ComponentFixture<DotCalendarComponent>;
+describe('BarChartComponent', () => {
+  let component: BarChartComponent;
+  let fixture: ComponentFixture<BarChartComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DotCalendarComponent],
+      declarations: [BarChartComponent],
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DotCalendarComponent);
+    fixture = TestBed.createComponent(BarChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

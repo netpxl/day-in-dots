@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { ActivityManagmentComponent } from './component/activity-managment/activity-managment.component';
 import { NewActivityComponent } from './component/new-activity/new-activity.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { SingleActivityComponent } from './component/single-activity/single-activity.component';
-import { MatInputModule } from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   declarations: [
     ActivityManagmentComponent,
     NewActivityComponent,
-    SingleActivityComponent
+    SingleActivityComponent,
   ],
   imports: [
     CommonModule,
@@ -19,6 +19,6 @@ import {MatButtonModule} from '@angular/material/button';
     MatInputModule,
     MatButtonModule,
   ],
-  exports: [ActivityManagmentComponent]
+  exports: [ActivityManagmentComponent],
 })
 export class ActivityManagementModule { }

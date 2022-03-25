@@ -8,9 +8,9 @@ describe('NewActivityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewActivityComponent ]
+      declarations: [NewActivityComponent],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

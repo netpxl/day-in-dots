@@ -1,39 +1,37 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component, EventEmitter, OnInit, Output,
+} from '@angular/core';
 
 @Component({
-  selector: 'app-datepicker',
+  selector: 'did-datepicker',
   templateUrl: './datepicker.component.html',
-  styleUrls: ['./datepicker.component.scss']
+  styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements OnInit {
-
-  _selectedDate = new Date()
+  _selectedDate = new Date();
 
   @Output()
-  dateChanged: EventEmitter<string> = new EventEmitter<string>();
-
-  constructor() { }
+    dateChanged = new EventEmitter<string>();
 
   ngOnInit(): void {
-    this.emitNewDate()
+    this.emitNewDate();
   }
 
   formatDateForMachine(date: Date): string {
-    return '' + date.getFullYear() + date.getMonth() + date.getDate();
+    return `${date.getFullYear()}${date.getMonth()}${date.getDate()}`;
   }
 
   private emitNewDate() {
-    this.dateChanged.emit(this.formatDateForMachine(this._selectedDate))
+    this.dateChanged.emit(this.formatDateForMachine(this._selectedDate));
   }
 
   selectNextDate() {
-    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() + 1))
-    this.emitNewDate()
+    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() + 1));
+    this.emitNewDate();
   }
 
   selectPreviousDate() {
-    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() - 1))
-    this.emitNewDate()
+    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() - 1));
+    this.emitNewDate();
   }
-
 }

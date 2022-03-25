@@ -1,0 +1,4 @@
+<ng-container *ngIf="(data$ | async)?.length && (data$ | async) as data">
+    <h3>Your analytics</h3>
+    <did-bar-chart [data]="data"></did-bar-chart>
+</ng-container>

@@ -8,9 +8,9 @@ describe('ActivityManagmentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActivityManagmentComponent ]
+      declarations: [ActivityManagmentComponent],
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
