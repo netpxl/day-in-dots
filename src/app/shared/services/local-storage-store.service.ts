@@ -88,7 +88,7 @@ export class LocalStorageStoreService extends StoreService {
     return config;
   }
 
-  setCurrentlySelectedActivity(activity: ActivityInterface) {
+  setCurrentlySelectedActivity(activity: ActivityInterface|undefined) {
     this.currentlySelectedActivitiy = activity;
   }
 

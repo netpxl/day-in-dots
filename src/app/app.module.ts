@@ -11,7 +11,7 @@ import { ActivityManagementModule } from './modules/activity-management/activity
 import { SharedModule } from './shared/shared.module';
 import { StoreService } from './shared/services/store.service.abstract';
 import { LocalStorageStoreService } from './shared/services/local-storage-store.service';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +24,8 @@ import { LocalStorageStoreService } from './shared/services/local-storage-store.
     AppRoutingModule,
     DotCalendarModule,
     ActivityManagementModule,
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     {provide: StoreService, useClass: LocalStorageStoreService}

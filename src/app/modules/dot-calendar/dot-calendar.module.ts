@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DotCalendarComponent } from './component/dot-calendar/dot-calendar.component';
 import { DotComponent } from './component/dot/dot.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { DatepickerComponent } from './component/datepicker/datepicker.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -10,9 +11,11 @@ import { SharedModule } from 'src/app/shared/shared.module';
   declarations: [
     DotCalendarComponent,
     DotComponent,
+    DatepickerComponent,
   ],
   imports: [
     CommonModule,
+    MatIconModule
   ],
   exports: [
     DotCalendarComponent

@@ -1,6 +1,5 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { DayBoardInterface } from 'src/app/core/interfaces/day-board.interface';
-import { LocalStorageStoreService } from 'src/app/shared/services/local-storage-store.service';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
 import { DotCalendarService } from '../../service/dot-calendar.service';
 
@@ -13,23 +12,26 @@ export class DotCalendarComponent implements OnInit {
   @HostBinding("style.--__columns") columns: number = 5;
 
   config?: DayBoardInterface;
+  currentDate: string = ''
 
   constructor(
     private readonly dotCalendarService: DotCalendarService,
-    private readonly storeService: LocalStorageStoreService
+    private readonly storeService: StoreService
   ) {}
 
   ngOnInit(): void {
-    const date = new Date();
-    const dateString = '' + date.getFullYear() + date.getMonth() + date.getDate()
     this.storeService.config$.subscribe((response) => {
       this.config = response || undefined;
       if (!this.config) {
-        this.config = this.dotCalendarService.generateNewDayBoard(dateString);
+        this.config = this.dotCalendarService.generateNewDayBoard(this.currentDate);
       }
       this.columns = this.config?.slots.length
     })
-    this.storeService.loadDotCalendar(dateString);
+  }
+
+  onDateChanged(date: string) {
+    this.currentDate = date;
+    this.storeService.loadDotCalendar(date)
   }
 
   colorAsCurrentlySelected(firstIndex: number, secondIndex: number) {

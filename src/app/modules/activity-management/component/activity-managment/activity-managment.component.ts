@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityInterface } from 'src/app/core/interfaces/activity.interface';
-import { LocalStorageStoreService } from 'src/app/shared/services/local-storage-store.service';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
 
 @Component({
@@ -13,7 +12,7 @@ export class ActivityManagmentComponent implements OnInit {
   activities: ActivityInterface[] = []
 
   constructor(
-    private readonly storeService: LocalStorageStoreService,
+    readonly storeService: StoreService,
   ) {}
 
   ngOnInit(): void {
@@ -25,10 +24,11 @@ export class ActivityManagmentComponent implements OnInit {
   onNewActivityAdded(activity: ActivityInterface): void {
     this.storeService.saveActivity(activity).subscribe((activities) => {
       this.activities = activities;
+      this.storeService.setCurrentlySelectedActivity(activity)
     })
   }
 
-  setAsSelectedActivity(activity: ActivityInterface): void {
+  setAsSelectedActivity(activity?: ActivityInterface|undefined): void {
     this.storeService.setCurrentlySelectedActivity(activity)
   }
 

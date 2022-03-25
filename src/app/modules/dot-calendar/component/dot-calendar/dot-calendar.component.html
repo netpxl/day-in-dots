@@ -1,13 +1,14 @@
+<app-datepicker (dateChanged)="onDateChanged($event)"></app-datepicker>
 <div class="dot-calendar" *ngIf="config">
     <div class="hour-head">
-        <span *ngFor="let hour of config.hours">
+        <div *ngFor="let hour of config.hours">
             {{hour}}
-        </span>
+        </div>
     </div>
     <div class="minute-head">
-        <span *ngFor="let minute of config.slots">
+        <div *ngFor="let minute of config.slots">
             {{minute}}
-        </span>
+        </div>
     </div>
     <div class="dot-wrapper">
         <ng-container *ngFor="let row of config.board; index as i">

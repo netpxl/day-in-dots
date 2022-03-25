@@ -1,4 +1,25 @@
+:host {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .activity-management {
     display: flex;
     flex-direction: column;
+    position: sticky;
+    bottom: 0px;
+    top: 0px;
+}
+
+.activity-management__current-activities {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+
+    > .active {
+        border: 1px solid green;
+    }
 }

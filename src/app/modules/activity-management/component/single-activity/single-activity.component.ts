@@ -34,4 +34,14 @@ export class SingleActivityComponent {
     this._config = data
   }
 
+  resetEditMode() {
+    this.editMode = false;
+    this.config = this._config;
+  }
+
+  saveActivity() {
+    this.editMode = false;
+    this.updateActivity.emit({...this.config, ...this.activityFormGroup.value})
+  }
+
 }

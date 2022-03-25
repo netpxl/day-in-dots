@@ -1,12 +1,16 @@
 <div class="activity-management">
     <div class="activity-management__current-activities">
-        <div *ngFor="let activity of activities">
+        <h3>Your activities</h3>
+        <ng-container *ngFor="let activity of activities">
             <app-single-activity 
+            [class.active]="activity.id === storeService.currentlySelectedActivitiy?.id"
             [config]="activity" 
             (deleteActivity)="onDeleteActivity($event)"
             (updateActivity)="onUpdateActivity($event)"
-            (click)="setAsSelectedActivity(activity)"></app-single-activity>
-        </div>
+            (click)="setAsSelectedActivity(activity)"
+            (dblclick)="setAsSelectedActivity(undefined)"
+            ></app-single-activity>
+        </ng-container>
     </div>
     <app-new-activity (newActivityAdded)="onNewActivityAdded($event)"></app-new-activity>
 </div>

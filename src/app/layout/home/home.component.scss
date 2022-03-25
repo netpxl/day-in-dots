@@ -1,4 +1,11 @@
 :host {
+    --__flex-direction: column;
     display: flex;
-    flex-direction: row;
+    flex-direction: var(--__flex-direction);
+}
+
+@media screen and (min-width: 800px) {
+    :host {
+        --__flex-direction: row;
+    }
 }
