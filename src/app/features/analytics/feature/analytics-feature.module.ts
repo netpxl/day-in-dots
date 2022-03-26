@@ -15,4 +15,4 @@ import { AnalyticsComponent } from './component/analytics/analytics.component';
     AnalyticsComponent,
   ],
 })
-export class AnalyticsModule { }
+export class AnalyticsFeatureModule { }

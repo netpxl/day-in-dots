@@ -21,4 +21,4 @@ import { SingleActivityComponent } from './component/single-activity/single-acti
   ],
   exports: [ActivityManagmentComponent],
 })
-export class ActivityManagementModule { }
+export class ActivityManagementFeatureModule { }

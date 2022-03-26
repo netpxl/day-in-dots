@@ -19,4 +19,4 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     DotCalendarComponent,
   ],
 })
-export class DotCalendarModule { }
+export class DotCalendarFeatureModule { }

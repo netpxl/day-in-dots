@@ -33,12 +33,18 @@ export class ActivityManagmentComponent implements OnInit {
 
   onDeleteActivity(activity: ActivityInterface): void {
     this.storeService.deleteActivity(activity).subscribe((activities) => {
+      if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
+        this.setAsSelectedActivity(undefined)
+      }
       this.activities = activities;
     });
   }
 
   onUpdateActivity(activity: ActivityInterface): void {
     this.storeService.updateActivity(activity).subscribe((activities) => {
+      if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
+        this.setAsSelectedActivity(activity)
+      }
       this.activities = activities;
     });
   }
