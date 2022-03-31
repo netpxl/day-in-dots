@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
-import { AnalyticsInterface } from 'src/app/core/interfaces/analytics.interface';
+import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
 
 @Component({
   selector: 'did-bar-chart',
@@ -9,13 +9,18 @@ import { AnalyticsInterface } from 'src/app/core/interfaces/analytics.interface'
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements AfterViewInit, OnChanges {
-
-
+  
   @Input()
   data: AnalyticsInterface[] = []
 
   @ViewChild('barChart')
   private chartContainer?: ElementRef;
+
+  @HostListener('window:resize')
+  reloadChart() {
+    this.createChart();
+  }
+
 
   margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
@@ -38,7 +43,8 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
     .scaleBand()
     .rangeRound([0, contentWidth])
     .padding(0.1)
-    .domain(data.map(d => d.name));
+    .domain(data.map(d => this.handleNameSubstring(d.name)
+    ));
 
     const y = d3
       .scaleLinear()
@@ -81,7 +87,7 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
       .data(data)
       .enter().append('rect')
       .attr('class', 'bar')
-      .attr('x', (d) => x(d.name)!)
+      .attr('x', (d) => x(this.handleNameSubstring(d.name))!)
       .attr('y', d => y(d.slotsUsed))
       .style('fill', (d) => d.color)
       .attr('width', x.bandwidth())
@@ -91,7 +97,15 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
       .data(data)
       .enter().append('text')
       .text(d => d.slotsUsed)
-      .attr('x', (d: AnalyticsInterface) => x(d.name)! + (x.bandwidth() / 2) - 7)
+      .attr('x', (d: AnalyticsInterface) => x(this.handleNameSubstring(d.name))! + (x.bandwidth() / 2) - 7)
       .attr('y', (d: AnalyticsInterface) => y(d.slotsUsed) + ((contentHeight - y(d.slotsUsed)) / 2) + 5);
+  }
+
+  private handleNameSubstring(name: string = ''): string {
+    let result = name;
+    if (name.length > 10) {
+      result = name.slice(0, 10) + '...';
+    }
+    return result;
   }
 }

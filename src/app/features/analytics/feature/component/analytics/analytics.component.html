@@ -1,4 +1,6 @@
-<ng-container *ngIf="(data$ | async)?.length && (data$ | async) as data">
+<div class="analytics__wrapper" *ngIf="(data$ | async)?.length && (data$ | async) as data">
     <h3>Your analytics</h3>
-    <did-bar-chart [data]="data"></did-bar-chart>
-</ng-container>
+    <did-bar-chart [data]="data" *ngIf="chartType === chartTypes.BAR"></did-bar-chart>
+    <did-numbers-analytics [data]="data" *ngIf="chartType === chartTypes.NUMBERS"></did-numbers-analytics>
+    <button mat-button (click)="changeAnalytics()">Change Analytics</button>
+</div>

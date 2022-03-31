@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import {
   Observable, of, ReplaySubject, take,
 } from 'rxjs';
-import { ActivityInterface } from 'src/app/core/interfaces/activity.interface';
-import { DayBoardInterface } from 'src/app/core/interfaces/day-board.interface';
+import { ActivityInterface } from 'src/app/core/interface/activity.interface';
+import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
 import { StoreService } from './store.service.abstract';
 
 @Injectable({

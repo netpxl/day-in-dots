@@ -16,6 +16,7 @@
         "max-len": ["error", { "code": 140, "tabWidth": 4 }],
         "no-plusplus": ["off"],
         "no-param-reassign": ["off"],
-        "class-methods-use-this": ["off"]
+        "class-methods-use-this": ["off"],
+        "prefer-destructuring": ["off"]
     }
 }

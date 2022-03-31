@@ -1,10 +1,12 @@
 :host {
-    width: 100%;
-    padding: 8px;
+    &.active .single-activity__preview {
+        border: 1px solid green;
+    }
 }
 
-.single-activity__preview {
-    width: 100%;
+.single-activity__preview, .single-activity__edit {
+    padding: 8px;
+    width: calc(100% - 18px);
     display: flex;
     flex-direction: row;
     justify-content: center;

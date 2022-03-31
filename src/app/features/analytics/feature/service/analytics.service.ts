@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { AnalyticsInterface } from 'src/app/core/interfaces/analytics.interface';
+import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
 
 @Injectable({

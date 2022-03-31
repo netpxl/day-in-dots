@@ -1,0 +1,35 @@
+:host {
+    width: calc(100% - 16px);
+    margin: 8px;
+
+}
+
+.number-analytics__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.number-analytics__entry {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 8px;
+    
+
+    span {
+        flex: 1 1 0px;
+    }
+
+
+    :last-child {
+        border-bottom: none;
+    }
+}
+
+.number-analytics__entry__name {
+    overflow-x: hidden;
+}

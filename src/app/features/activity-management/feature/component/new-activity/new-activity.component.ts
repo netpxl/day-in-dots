@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivityInterface } from 'src/app/core/interfaces/activity.interface';
+import { ActivityInterface } from 'src/app/core/interface/activity.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({

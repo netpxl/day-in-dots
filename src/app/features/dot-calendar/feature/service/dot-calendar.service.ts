@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DayBoardInterface } from 'src/app/core/interfaces/day-board.interface';
-import { DotInterface } from 'src/app/core/interfaces/dot.interface';
+import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
+import { DotInterface } from 'src/app/core/interface/dot.interface';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -45,6 +45,7 @@ export class DotCalendarService {
     }
 
     return {
+      id: uuidv4(),
       hours,
       slots,
       date,

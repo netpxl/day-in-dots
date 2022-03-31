@@ -1,7 +1,7 @@
 import {
   Component, HostBinding, OnInit,
 } from '@angular/core';
-import { DayBoardInterface } from 'src/app/core/interfaces/day-board.interface';
+import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
 import { DotCalendarService } from '../../service/dot-calendar.service';
 
@@ -55,6 +55,7 @@ export class DotCalendarComponent implements OnInit {
     this.config.board[firstIndex][secondIndex] = {
       id: this.config.board[firstIndex][secondIndex].id,
       activityId: this.storeService.currentlySelectedActivitiy.id,
+      name: this.storeService.currentlySelectedActivitiy.name,
       color: this.storeService.currentlySelectedActivitiy.color,
       hour: this.config.hours[firstIndex],
       slot: this.config.slots[secondIndex],

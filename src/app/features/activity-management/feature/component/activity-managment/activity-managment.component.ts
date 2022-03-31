@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivityInterface } from 'src/app/core/interfaces/activity.interface';
+import { ActivityInterface } from 'src/app/core/interface/activity.interface';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
 
 @Component({

@@ -1,16 +1,18 @@
 <div class="activity-management">
     <div class="activity-management__current-activities">
         <h3>Your activities</h3>
-        <ng-container *ngFor="let activity of activities">
-            <did-single-activity 
-            [class.active]="activity.id === storeService.currentlySelectedActivitiy?.id"
-            [config]="activity" 
-            (deleteActivity)="onDeleteActivity($event)"
-            (updateActivity)="onUpdateActivity($event)"
-            (click)="setAsSelectedActivity(activity)"
-            (dblclick)="setAsSelectedActivity(undefined)"
-            ></did-single-activity>
-        </ng-container>
+        <div class="activity-management__current-activities__wrapper">
+            <ng-container *ngFor="let activity of activities">
+                <did-single-activity 
+                [class.active]="activity.id === storeService.currentlySelectedActivitiy?.id"
+                [config]="activity" 
+                (deleteActivity)="onDeleteActivity($event)"
+                (updateActivity)="onUpdateActivity($event)"
+                (click)="setAsSelectedActivity(activity)"
+                (dblclick)="setAsSelectedActivity(undefined)"
+                ></did-single-activity>
+            </ng-container>
+        </div>
     </div>
     <did-new-activity (newActivityAdded)="onNewActivityAdded($event)"></did-new-activity>
 </div>

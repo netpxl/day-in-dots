@@ -1,5 +1,7 @@
 <div class="add-new-activity" [formGroup]="newActivityForm">
-    <button mat-raised-button color="primary" [disabled]="newActivityForm.invalid" (click)="addNewActivity()">+</button>
+    <button mat-raised-button color="primary" [disabled]="newActivityForm.invalid" (click)="addNewActivity()">
+        <mat-icon aria-hidden="false" aria-label="icon">add</mat-icon>
+    </button>
     <mat-form-field appearance="fill">
         <mat-label>Color</mat-label>
         <input matInput type="color" formControlName="color">

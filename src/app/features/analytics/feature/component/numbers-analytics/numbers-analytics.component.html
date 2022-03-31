@@ -1,0 +1,7 @@
+<div class="number-analytics__wrapper" *ngIf="data?.length">
+    <div class="number-analytics__entry" *ngFor="let entry of data">
+        <span class="number-analytics__entry__name">Name: <b>{{entry.name}}</b></span>
+        <span>Slots used: {{entry.slotsUsed}}</span>
+        <span>Time: {{entry.slotsUsed * (60 / slotAmount)}} Minutes</span>
+    </div>
+</div>
