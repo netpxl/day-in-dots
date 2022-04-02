@@ -5,5 +5,5 @@ export interface DayBoardInterface {
   hours: Array<number>
   slots: Array<number>
   date: string
-  board: Array<Array<DotInterface>>
+  board: DotInterface[][]
 }

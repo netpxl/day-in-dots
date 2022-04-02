@@ -8,7 +8,7 @@ import {
   styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements OnInit {
-  _selectedDate = new Date();
+  selectedDate = new Date();
 
   @Output()
     dateChanged = new EventEmitter<string>();
@@ -22,16 +22,17 @@ export class DatepickerComponent implements OnInit {
   }
 
   private emitNewDate() {
-    this.dateChanged.emit(this.formatDateForMachine(this._selectedDate));
+    this.selectedDate = new Date(this.selectedDate.getTime());
+    this.dateChanged.emit(this.formatDateForMachine(this.selectedDate));
   }
 
   selectNextDate() {
-    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() + 1));
+    this.selectedDate.setDate(this.selectedDate.getDate() + 1);
     this.emitNewDate();
   }
 
   selectPreviousDate() {
-    this._selectedDate = new Date(this._selectedDate.setDate(this._selectedDate.getDate() - 1));
+    this.selectedDate.setDate(this.selectedDate.getDate() - 1);
     this.emitNewDate();
   }
 }

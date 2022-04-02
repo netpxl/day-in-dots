@@ -1,17 +1,15 @@
+@import  '__breakpoints';
+@import  '__flexbox';
 :host {
     --__flex-direction: column-reverse
+    @include mq('tablet') {
+        --__flex-direction: row;
+    }
 }
 
 .add-new-activity {
     margin: 8px;
-    display: flex;
+    @include flex-center;
     flex-direction: var(--__flex-direction);
     gap: 8px;
-    justify-content: center;
-}
-
-@media screen and (min-width: 800px) {
-    :host {
-        --__flex-direction: row;
-    }
 }

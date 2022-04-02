@@ -1,0 +1,30 @@
+@import  '__breakpoints.scss';
+:host {
+    --_dotWidth: var(--__dotWidth, 3vw);
+    --_dotHeight: var(--__dotHeight, 3vw);
+    --_dot-bgColor: var(--__bg-color, var(--_primaryTextColor));
+    width: var(--_dotWidth);
+    height:var(--_dotHeight);
+
+    @include mq('tablet') {
+        --__dotHeight: 1.5vw;
+        --__dotWidth: 1.5vw;
+    }
+}
+
+.dot {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    width: 100%;
+    position: relative;
+}
+
+
+.dot:before {
+    content: "";
+    background-color: var(--_dot-bgColor);
+    display: block;
+    padding-top: 100%;
+    border-radius: 50%;
+}

@@ -1,6 +1,4 @@
+@import '__flexbox';
 :host {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
 }

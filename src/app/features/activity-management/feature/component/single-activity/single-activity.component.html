@@ -1,26 +1,21 @@
 <div class="single-activity" *ngIf="config">
     <div class="single-activity__preview" *ngIf="!editMode; else editModeTemplate" (dblclick)="editMode = true;">
-        <div class="single-activity__preview__color" [style.backgroundColor]="config.color">
-
-        </div>
         <div class="single-activity__preview__name">
             {{config.name}}
         </div>
+        <did-dot [color]="config.color"></did-dot>
     </div>
     <ng-template #editModeTemplate>
         <div class="single-activity__edit" [formGroup]="activityFormGroup">
-            <mat-form-field appearance="fill">
-                <mat-label>Color</mat-label>
-                <input matInput type="color" formControlName="color">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
-                <input matInput type="text" formControlName="name">
-            </mat-form-field>
+            <label for="add-new-activity__color">Color</label>
+            <input id="add-new-activity__color" type="color" formControlName="color" />
+        
+            <label for="add-new-activity__name">Name</label>
+            <input id="add-new-activity__name" type="text" formControlName="name" />
 
-            <button mat-raised-button color="primary" (click)="saveActivity()">Save</button>
-            <button mat-raised-button color="accent" (click)="resetEditMode()">Abort</button>
-            <button mat-raised-button color="warn" (click)="deleteActivity.emit(config)">Delete Activity</button>
+            <button (click)="saveActivity()">Save</button>
+            <button (click)="resetEditMode()">Abort</button>
+            <button (click)="deleteActivity.emit(config)">Delete Activity</button>
         </div>
     </ng-template>
 </div>

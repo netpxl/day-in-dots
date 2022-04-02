@@ -1,27 +1,20 @@
+@import  '__flexbox';
 :host {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center;
 }
 .activity-management {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+    @include flex-column;
 }
 
 .activity-management__current-activities {
-    display: flex;
+    @include flex-center-column;
     max-height: 500px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
     gap: 8px;
     padding: 16px;
 }
 
 .activity-management__current-activities__wrapper {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     overflow-y: scroll;
-    width: 100%;
+    padding: 24px;
 }

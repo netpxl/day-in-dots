@@ -1,9 +1,6 @@
+@import '__flexbox';
 .analytics__wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include flex-center-column;
     height: 100%;
 }
 
@@ -13,8 +10,4 @@ did-bar-chart {
 
 h3 {
     text-align: center;
-}
-
-button {
-    justify-self: flex-end;
 }

@@ -1,0 +1,12 @@
+@import '__flexbox';
+.activity-tracking-modal {
+    @include flex-align-center;
+    @include flex-column;
+    @include flex-justify-between;
+    height: 100%;
+}
+
+.activity-tracking-modal__footer {
+    @include flex;
+    justify-content: flex-end;
+}

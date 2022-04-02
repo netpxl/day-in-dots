@@ -1,10 +1,8 @@
+@import '__flexbox';
 :host {
+    flex: 1;
     --__gap: 8px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    @include flex-center-column;
 }
 
 .minute-head,
@@ -32,9 +30,7 @@
     grid-row: 1;
 
     > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex-center;
     }
 }
 
@@ -43,9 +39,7 @@
     grid-row: 2;
 
     > div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex-center;
     }
 }
 

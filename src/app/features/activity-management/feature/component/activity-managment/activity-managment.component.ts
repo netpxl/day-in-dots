@@ -23,11 +23,15 @@ export class ActivityManagmentComponent implements OnInit {
   onNewActivityAdded(activity: ActivityInterface): void {
     this.storeService.saveActivity(activity).subscribe((activities) => {
       this.activities = activities;
-      this.storeService.setCurrentlySelectedActivity(activity);
+      this.setAsSelectedActivity(activity);
     });
   }
 
   setAsSelectedActivity(activity?: ActivityInterface | undefined): void {
+    if (this.storeService.currentlySelectedActivitiy?.id === activity?.id) {
+      this.storeService.setCurrentlySelectedActivity(undefined);
+      return;
+    }
     this.storeService.setCurrentlySelectedActivity(activity);
   }
 
@@ -42,9 +46,7 @@ export class ActivityManagmentComponent implements OnInit {
 
   onUpdateActivity(activity: ActivityInterface): void {
     this.storeService.updateActivity(activity).subscribe((activities) => {
-      if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
-        this.setAsSelectedActivity(activity);
-      }
+      this.setAsSelectedActivity(activity);
       this.activities = activities;
     });
   }

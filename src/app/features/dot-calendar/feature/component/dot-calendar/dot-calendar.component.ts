@@ -15,7 +15,7 @@ export class DotCalendarComponent implements OnInit {
 
   config?: DayBoardInterface;
 
-  currentDate = '';
+  private _currentDate = '';
 
   constructor(
     private readonly dotCalendarService: DotCalendarService,
@@ -26,18 +26,25 @@ export class DotCalendarComponent implements OnInit {
     this.storeService.config$.subscribe((response) => {
       this.config = response || undefined;
       if (!this.config) {
-        this.config = this.dotCalendarService.generateNewDayBoard(this.currentDate);
+        this.config = this.dotCalendarService.generateNewDayBoard(this._currentDate);
       }
       this.columns = this.config?.slots.length;
     });
   }
 
   onDateChanged(date: string) {
-    this.currentDate = date;
+    this._currentDate = date;
     this.storeService.loadDotCalendar(date);
   }
 
-  colorAsCurrentlySelected(firstIndex: number, secondIndex: number) {
+  handleClickedDot(firstIndex: string | number, secondIndex: string | number) {
+    if (typeof firstIndex === 'string') {
+      firstIndex = parseInt(firstIndex, 10);
+    }
+
+    if (typeof secondIndex === 'string') {
+      secondIndex = parseInt(secondIndex, 10);
+    }
     if (!this.config) {
       return;
     }
@@ -46,9 +53,15 @@ export class DotCalendarComponent implements OnInit {
       !this.storeService.currentlySelectedActivitiy
       || this.config.board[firstIndex][secondIndex].activityId === this.storeService.currentlySelectedActivitiy.id
     ) {
-      delete this.config.board[firstIndex][secondIndex].activityId;
-      delete this.config.board[firstIndex][secondIndex].color;
-      this.storeService.persistDataIntoLocalStorage(this.config);
+      this._unselectClickedDot(firstIndex, secondIndex);
+      return;
+    }
+
+    this._colorAsCurrentlySelected(firstIndex, secondIndex);
+  }
+
+  private _colorAsCurrentlySelected(firstIndex: number, secondIndex: number) {
+    if (!this.config || !this.storeService.currentlySelectedActivitiy) {
       return;
     }
 
@@ -57,9 +70,16 @@ export class DotCalendarComponent implements OnInit {
       activityId: this.storeService.currentlySelectedActivitiy.id,
       name: this.storeService.currentlySelectedActivitiy.name,
       color: this.storeService.currentlySelectedActivitiy.color,
-      hour: this.config.hours[firstIndex],
-      slot: this.config.slots[secondIndex],
     };
+    this.storeService.persistDataIntoLocalStorage(this.config);
+  }
+
+  private _unselectClickedDot(firstIndex: number, secondIndex: number) {
+    if (!this.config) {
+      return;
+    }
+    delete this.config.board[firstIndex][secondIndex].activityId;
+    delete this.config.board[firstIndex][secondIndex].color;
     this.storeService.persistDataIntoLocalStorage(this.config);
   }
 }

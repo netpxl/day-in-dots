@@ -1,0 +1,21 @@
+<div class="activity-tracking-modal">
+    <div class="activity-tracking-modal__header">
+        <h2>Activity tracking</h2>
+    </div>
+    <div class="activity-tracking-modal__body">
+        <span>Select the activity you are currently working on and start recording your activity.
+            If you change the activity while the tracking is running, the tracking continues and activites are rounded up/down to the next
+            matching timeslot
+        </span>
+
+        <label for="activity-tracking-modal__body__dropdown">currentActivity</label>
+        <select id="activity-tracking-modal__body__dropdown" [formControl]="currentActivity">
+          <option *ngFor="let activity of listOfActivities" [value]="activity">{{activity.name}}</option>
+        </select>
+          <div (click)="startTracking()">lets go</div>
+    </div>
+    <div class="activity-tracking-modal__footer">
+        <button mat-button warn (click)="closeModal()">Close</button>
+
+    </div>
+</div>

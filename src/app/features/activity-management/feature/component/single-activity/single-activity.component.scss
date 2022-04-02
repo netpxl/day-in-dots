@@ -1,3 +1,5 @@
+@import  '__flexbox';
+
 :host {
     &.active .single-activity__preview {
         border: 1px solid green;
@@ -5,18 +7,8 @@
 }
 
 .single-activity__preview, .single-activity__edit {
+    @include flex-align-center;
+    @include flex-justify-between;
     padding: 8px;
-    width: calc(100% - 18px);
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
     gap: 8px;
-}
-
-.single-activity__preview__color {
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    display: inline-block;
 }

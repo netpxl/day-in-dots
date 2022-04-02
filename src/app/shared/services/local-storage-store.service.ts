@@ -21,9 +21,7 @@ export class LocalStorageStoreService extends StoreService {
   }
 
   getActivities(): Observable<ActivityInterface[]> {
-    return of(JSON.parse(
-      localStorage.getItem('activities') || '[]',
-    ));
+    return of(this._getActivities());
   }
 
   saveActivity(activity: ActivityInterface): Observable<ActivityInterface[]> {
@@ -77,6 +75,7 @@ export class LocalStorageStoreService extends StoreService {
   }
 
   mergeWithActivites(config: DayBoardInterface, activities: ActivityInterface[]) {
+    const activityMap = new Map<string, ActivityInterface>();
     config.board.forEach((row) => {
       row.forEach((dot, index) => {
         const activity = activities.find((savedActivity) => savedActivity.id === dot.activityId);
@@ -87,6 +86,7 @@ export class LocalStorageStoreService extends StoreService {
           row[index] = dot;
           return;
         }
+        activityMap.set(activity.id, activity);
         row[index] = { ...dot, color: activity.color, name: activity.name };
       });
     });

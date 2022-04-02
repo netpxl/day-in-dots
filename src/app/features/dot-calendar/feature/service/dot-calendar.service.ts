@@ -30,15 +30,13 @@ export class DotCalendarService {
     const hours = this._getHoursOfDay();
     const slots = this._getMinutesOfHour(15);
 
-    const board = [];
+    const board: DotInterface[][] = [];
     for (let i = 0; i < hours.length; i++) {
-      const newArray: DotInterface[] = [];
-      board[i] = newArray;
+      const newBoardEntry: DotInterface[] = [];
+      board[i] = newBoardEntry;
       for (let j = 0; j < slots.length; j++) {
         const dotConfig: DotInterface = {
           id: uuidv4(),
-          hour: hours[i],
-          slot: slots[j],
         };
         board[i][j] = dotConfig;
       }

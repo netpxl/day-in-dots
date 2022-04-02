@@ -10,6 +10,8 @@ import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
 })
 export class BarChartComponent implements AfterViewInit, OnChanges {
   
+
+  barWidth = 150;
   @Input()
   data: AnalyticsInterface[] = []
 
@@ -34,8 +36,7 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
 
   private generateSvg(element: any) {
     return d3.select(element).append('svg')
-    .attr('width', element.offsetWidth)
-    .attr('height', element.offsetHeight);
+    .attr("viewBox", `0 0 ${element.offsetWidth} ${element.offsetHeight}`);
   }
 
   private generateAxis(data: AnalyticsInterface[], contentWidth: number, contentHeight: number) {
@@ -89,10 +90,11 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
       .attr('class', 'bar')
       .attr('x', (d) => x(this.handleNameSubstring(d.name))!)
       .attr('y', d => y(d.slotsUsed))
-      .style('fill', (d) => d.color)
+      .style('fill', d => d.color)
+      .style('fill-opacity', 0.8)
       .attr('width', x.bandwidth())
       .attr('height', d => contentHeight - y(d.slotsUsed));
-
+      
       bars
       .data(data)
       .enter().append('text')

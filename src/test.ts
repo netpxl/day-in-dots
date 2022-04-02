@@ -6,6 +6,10 @@ import {
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting,
 } from '@angular/platform-browser-dynamic/testing';
+import { ngMocks } from 'ng-mocks';
+import { EMPTY } from 'rxjs';
+import { StoreService } from './app/shared/services/store.service.abstract';
+import { ActivityInterface } from './app/core/interface/activity.interface';
 
 declare const require: {
   context(path: string, deep?: boolean, filter?: RegExp): {
@@ -24,3 +28,15 @@ getTestBed().initTestEnvironment(
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+ngMocks.autoSpy('jasmine');
+
+ngMocks.defaultMock(StoreService, () => ({
+  currentlySelectedActivitiy: ({} as ActivityInterface),
+  getActivities: () => EMPTY,
+  persistDataIntoLocalStorage: () => EMPTY,
+  loadDotCalendar: () => EMPTY,
+  setCurrentlySelectedActivity: () => EMPTY,
+  saveActivity: () => EMPTY,
+  updateActivity: () => EMPTY,
+  deleteActivity: () => EMPTY,
+}));

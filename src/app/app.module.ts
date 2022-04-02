@@ -13,6 +13,7 @@ import { SharedModule } from './shared/shared.module';
 import { StoreService } from './shared/services/store.service.abstract';
 import { LocalStorageStoreService } from './shared/services/local-storage-store.service';
 import { AnalyticsFeatureModule } from './features/analytics/feature/analytics-feature.module';
+import { ActivityTrackingModule } from './features/activity-tracking/feature/activity-tracking/activity-tracking.module';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AnalyticsFeatureModule } from './features/analytics/feature/analytics-f
     AppRoutingModule,
     DotCalendarFeatureModule,
     ActivityManagementFeatureModule,
+    ActivityTrackingModule,
     AnalyticsFeatureModule,
     SharedModule,
     BrowserAnimationsModule,

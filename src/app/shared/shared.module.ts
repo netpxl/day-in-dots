@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { DotComponent } from './component/dot/dot.component';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
+  declarations: [DotComponent],
+  exports: [
+    DotComponent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SharedModule { }

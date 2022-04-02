@@ -10,9 +10,9 @@ import { AnalyticsService } from '../../service/analytics.service';
   styleUrls: ['./analytics.component.scss'],
 })
 export class AnalyticsComponent {
-  data$!: Observable<AnalyticsInterface[]>;
+  data$?: Observable<AnalyticsInterface[]>;
 
-  chartType: ChartTypeEnum = ChartTypeEnum.BAR;
+  chartType = ChartTypeEnum.BAR;
 
   chartTypes = ChartTypeEnum;
 

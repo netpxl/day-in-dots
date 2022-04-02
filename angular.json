@@ -31,9 +31,14 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/app/shared/style/__breakpoints.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app/shared/style"
+              ]
+            },
             "scripts": []
           },
           "configurations": {
@@ -100,7 +105,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []

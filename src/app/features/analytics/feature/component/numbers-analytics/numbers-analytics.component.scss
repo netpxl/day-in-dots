@@ -1,23 +1,22 @@
+@import '__flexbox';
 :host {
-    width: calc(100% - 16px);
-    margin: 8px;
-
+    @include flex-center;
+    margin-bottom: 8px;
 }
 
 .number-analytics__wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    @include flex-column;
+}
+
+:host, .number-analytics__wrapper, .number-analytics__entry {
     width: 100%;
 }
 
 .number-analytics__entry {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    border-bottom: 1px solid black;
-    margin-bottom: 8px;
+    @include flex-justify-between;
+    border-bottom: 1px solid var(--_hightlightColor);
+    padding-bottom: 4px;
+    margin: 8px;
     
 
     span {
@@ -25,11 +24,7 @@
     }
 
 
-    :last-child {
+    &:last-child {
         border-bottom: none;
     }
-}
-
-.number-analytics__entry__name {
-    overflow-x: hidden;
 }

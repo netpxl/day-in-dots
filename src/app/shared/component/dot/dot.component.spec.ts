@@ -22,4 +22,14 @@ describe('DotComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should set valid color', () => {
+    component.color = '#12345';
+    expect(component.selectedColor).toBe('#12345');
+  });
+
+  it('should use fallback if passed in color is invalid', () => {
+    component.color = 'test';
+    expect(component.selectedColor).toBe((component as any)._defaultColor);
+  });
 });

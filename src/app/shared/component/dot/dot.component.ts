@@ -6,13 +6,11 @@ import { Component, HostBinding, Input } from '@angular/core';
   styleUrls: ['./dot.component.scss'],
 })
 export class DotComponent {
-  @HostBinding('style.--__bg-color') selectedColor = '#bbb';
-
-  private readonly _defaultColor = '#bbb';
+  @HostBinding('style.--__bg-color') selectedColor?: string = undefined;
 
   @Input() set color(value: string) {
     if (!value.startsWith('#')) {
-      this.selectedColor = this._defaultColor;
+      this.selectedColor = undefined;
       return;
     }
     this.selectedColor = value;
