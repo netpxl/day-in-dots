@@ -31,8 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "src/app/shared/style/__breakpoints.scss"
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -104,6 +103,11 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app/shared/style"
+              ]
+            },
             "styles": [
               "src/styles.scss"
             ],

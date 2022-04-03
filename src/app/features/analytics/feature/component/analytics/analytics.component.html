@@ -2,5 +2,5 @@
     <h3>Your analytics</h3>
     <did-bar-chart [data]="data" *ngIf="chartType === chartTypes.BAR"></did-bar-chart>
     <did-numbers-analytics [data]="data" *ngIf="chartType === chartTypes.NUMBERS"></did-numbers-analytics>
-    <button mat-button (click)="changeAnalytics()">Change Analytics</button>
+    <sama-button label="Change Analytics" (click)="changeAnalytics()"></sama-button>
 </div>

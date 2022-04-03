@@ -1,0 +1,12 @@
+button {
+    font-size: 1rem;
+    padding: 1rem 0.6rem;
+    color: var(--_primaryTextColor);
+    border: 2px solid var(--_highlightColor);
+    background-color: transparent;
+    margin: 8px;
+}
+
+button:active {
+    box-shadow: inset rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

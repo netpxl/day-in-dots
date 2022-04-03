@@ -17,6 +17,14 @@
         "no-plusplus": ["off"],
         "no-param-reassign": ["off"],
         "class-methods-use-this": ["off"],
-        "prefer-destructuring": ["off"]
-    }
+        "prefer-destructuring": ["off"],
+        "no-restricted-syntax": ["off"],
+        "no-continue": ["off"]
+    },
+    "overrides": [{
+      "files": [ "*.spec.ts" ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": ["off"],
+      }
+    }]
 }

@@ -1,0 +1,63 @@
+:host {
+    position: relative;
+    margin: 1rem 0;
+}
+
+input.outline {
+    border: 1px solid #333333;
+    border-radius: 5px;
+}
+
+label {
+    position: absolute;
+    font-size: 1rem;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--_primaryTextColor);
+    margin: 0 0.5rem;
+    transition: 0.1s ease-out;
+    pointer-events: none;
+}
+
+input {
+    font-size: 1rem;
+    outline: none;
+    border: none;
+    padding: 1rem 0.6rem;
+    color: var(--_primaryTextColor);
+    transition: 0.1s ease-out;
+    border-bottom: 1px solid #333333;
+    background: transparent;
+    cursor: text;
+}
+
+input[type="color"] {
+    width: 75px;
+    height: 50px;
+    padding: 0.5rem 0.6rem;
+}
+
+input:focus {
+    border-color: var(--_highlightColor);
+}
+
+input:focus+label {
+    color: var(--_highlightColor);
+}
+
+input:focus+label,
+input:not(:placeholder-shown)+label {
+    top: 0;
+    transform: translateY(-50%) scale(0.9);
+}
+
+input:focus:not(.outline)~label,
+input:not(:placeholder-shown):not(.outline)~label {
+    padding-left: 0px;
+}
+
+input:disabled,
+input:disabled~.label {
+    opacity: 0.5;
+}

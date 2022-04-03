@@ -43,7 +43,7 @@ describe('AnalyticsService', () => {
     id: '',
     hours: [],
     slots: [],
-    board: {},
+    board: [],
     date: '',
   };
 

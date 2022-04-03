@@ -1,6 +1,6 @@
 html, body {
     --_primaryTextColor: #E1E2E2;
-    --_hightlightColor: #FB8122;
+    --_highlightColor: #FB8122;
     --_backgroundColor: #1D2228; 
     height: 100%;
     background-color: var(--_backgroundColor);
@@ -9,6 +9,6 @@ html, body {
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--_hightlightColor);
+    color: var(--_highlightColor);
     margin: 0px;
 }

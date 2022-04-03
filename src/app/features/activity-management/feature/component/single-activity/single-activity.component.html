@@ -7,15 +7,13 @@
     </div>
     <ng-template #editModeTemplate>
         <div class="single-activity__edit" [formGroup]="activityFormGroup">
-            <label for="add-new-activity__color">Color</label>
-            <input id="add-new-activity__color" type="color" formControlName="color" />
-        
-            <label for="add-new-activity__name">Name</label>
-            <input id="add-new-activity__name" type="text" formControlName="name" />
+            <sama-input label="color" id="add-new-activity__color" type="color" formControlName="color"></sama-input>
 
-            <button (click)="saveActivity()">Save</button>
-            <button (click)="resetEditMode()">Abort</button>
-            <button (click)="deleteActivity.emit(config)">Delete Activity</button>
+            <sama-input label="name" id="add-new-activity__name" type="text" formControlName="name"></sama-input>
+
+            <sama-button label="Save"(click)="saveActivity()"></sama-button>
+            <sama-button label="Abort"(click)="resetEditMode()"></sama-button>
+            <sama-button label="delete Activity"(click)="deleteActivity.emit(config)"></sama-button>
         </div>
     </ng-template>
 </div>
