@@ -1,23 +1,24 @@
 import {
-  LitElement, html, css, unsafeCSS,
+  html, css, unsafeCSS,
 } from 'lit-element';
+import { LionButton } from '@lion/button';
 
-export class SamaButton extends LitElement {
-  static STYLES = '';
-
-  disabled = false;
+export class SamaButton extends LionButton {
+  static CUSTOM_STYLES = '';
 
   label = '';
 
   static override get properties() {
     return {
+      ...super.properties,
       label: { type: String },
-      disabled: { type: Boolean },
     };
   }
 
   static override get styles() {
-    return css`${unsafeCSS(this.STYLES)}`;
+    return [
+      css`${unsafeCSS(this.CUSTOM_STYLES)}`,
+    ];
   }
 
   override render() {
@@ -28,7 +29,7 @@ export class SamaButton extends LitElement {
 
   clickHandler() {
     this.dispatchEvent(
-      new CustomEvent('button-clicked'),
+      new Event('click'),
     );
   }
 }

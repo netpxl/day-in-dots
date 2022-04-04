@@ -1,5 +1,5 @@
 <form class="add-new-activity" [formGroup]="newActivityForm">
     <sama-button label="Add" [disabled]="newActivityForm.invalid" (click)="addNewActivity()"></sama-button>
-    <sama-input label="Color" type="color" ngDefaultControl formControlName="color"></sama-input>
-    <sama-input label="Name" type="text" ngDefaultControl formControlName="name"></sama-input>
+    <sama-input label="Color" type="color" formControlName="color"></sama-input>
+    <sama-input label="Name" type="text" formControlName="name"></sama-input>
 </form>

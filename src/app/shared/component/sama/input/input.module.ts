@@ -4,7 +4,7 @@ import { SamaInput } from './input';
 Promise.all([
   import('./input.scss'),
 ]).then((style) => {
-  SamaInput.STYLES = style[0]['default'];
+  SamaInput.CUSTOM_STYLES = style[0]['default'];
   customElements.define('sama-input', SamaInput);
 });
 
