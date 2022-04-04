@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ActivityManagmentComponent } from './component/activity-managment/activity-managment.component';
 import { NewActivityComponent } from './component/new-activity/new-activity.component';
 import { SingleActivityComponent } from './component/single-activity/single-activity.component';
+import { ActivityManagementDataAccessModule } from '../data-access/activity-management-data-access.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { SingleActivityComponent } from './component/single-activity/single-acti
     CommonModule,
     ReactiveFormsModule,
     SharedModule,
+    ActivityManagementDataAccessModule,
   ],
   exports: [ActivityManagmentComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

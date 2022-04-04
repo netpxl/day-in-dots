@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { ActivityInterface } from 'src/app/core/interface/activity.interface';
 import { StoreService } from 'src/app/shared/services/store.service.abstract';
+import { ActivitymanagementState } from '../../../data-access/activity-management.reducer';
+import { selectStateActivities } from '../../../data-access/activity-management.selectors';
+import {
+  createActivity, deleteActivity, loadActivities, updateActivity,
+} from '../../../data-access/activity-managment.actions';
 
 @Component({
   selector: 'did-activity-managment',
@@ -12,19 +18,18 @@ export class ActivityManagmentComponent implements OnInit {
 
   constructor(
     readonly storeService: StoreService,
+    readonly store: Store<ActivitymanagementState>,
   ) {}
 
   ngOnInit(): void {
-    this.storeService.getActivities().subscribe((activities) => {
+    this.store.select(selectStateActivities).subscribe((activities) => {
       this.activities = activities;
     });
+    this.store.dispatch(loadActivities());
   }
 
   onNewActivityAdded(activity: ActivityInterface): void {
-    this.storeService.saveActivity(activity).subscribe((activities) => {
-      this.activities = activities;
-      this.setAsSelectedActivity(activity);
-    });
+    this.store.dispatch(createActivity({ activity }));
   }
 
   setAsSelectedActivity(activity?: ActivityInterface | undefined): void {
@@ -36,18 +41,14 @@ export class ActivityManagmentComponent implements OnInit {
   }
 
   onDeleteActivity(activity: ActivityInterface): void {
-    this.storeService.deleteActivity(activity).subscribe((activities) => {
-      if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
-        this.setAsSelectedActivity(undefined);
-      }
-      this.activities = activities;
-    });
+    if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
+      this.setAsSelectedActivity(undefined);
+    }
+    this.store.dispatch(deleteActivity({ activity }));
   }
 
   onUpdateActivity(activity: ActivityInterface): void {
-    this.storeService.updateActivity(activity).subscribe((activities) => {
-      this.setAsSelectedActivity(activity);
-      this.activities = activities;
-    });
+    this.setAsSelectedActivity(activity);
+    this.store.dispatch(updateActivity({ activity }));
   }
 }

@@ -23,13 +23,7 @@ export class SamaButton extends LionButton {
 
   override render() {
     return html`
-            <button @click="${this.clickHandler}">${this.label}</button>
+            <button>${this.label}</button>
         `;
-  }
-
-  clickHandler() {
-    this.dispatchEvent(
-      new Event('click'),
-    );
   }
 }
