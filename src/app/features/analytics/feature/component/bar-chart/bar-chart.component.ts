@@ -1,7 +1,8 @@
 /* eslint-disable */
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from '@angular/core';
+import { AnalyticsInterface } from '@core/interface/analytics.interface';
 import * as d3 from 'd3';
-import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
+
 
 @Component({
   selector: 'did-bar-chart',

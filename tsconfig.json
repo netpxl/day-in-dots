@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -21,7 +21,17 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@shared/*": ["app/shared/*"],
+      "@core/*": ["app/core/*"],
+      "@dot-calendar/feature/*": ["app/features/dot-calendar/feature/*"],
+      "@dot-calendar/data-access/*": ["app/features/dot-calendar/data-access/*"],
+      "@activity-management/feature/*": ["app/features/activity-management/feature/*"],
+      "@activity-management/data-access/*": ["app/features/activity-management/data-access/*"],
+      "@activity-tracking/feature/*": ["app/features/activity-tracking/feature/*"],
+      "@analytics/feature/*": ["app/features/analytics/feature/*"],
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

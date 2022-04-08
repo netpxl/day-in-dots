@@ -4,7 +4,7 @@
         <div class="activity-management__current-activities__wrapper">
             <ng-container *ngFor="let activity of activities">
                 <did-single-activity 
-                [class.active]="activity.id === storeService.currentlySelectedActivitiy?.id"
+                [class.active]="activity.id === (currentlySelectedActivity$ | async)?.id"
                 [config]="activity" 
                 (deleteActivity)="onDeleteActivity($event)"
                 (updateActivity)="onUpdateActivity($event)"

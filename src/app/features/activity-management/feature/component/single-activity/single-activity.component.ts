@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output,
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
+import { ActivityInterface } from '@core/interface/activity.interface';
 
 @Component({
   selector: 'did-single-activity',

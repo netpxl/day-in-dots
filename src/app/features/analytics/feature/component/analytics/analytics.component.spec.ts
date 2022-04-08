@@ -1,3 +1,4 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockProvider } from 'ng-mocks';
 import { AnalyticsService } from '../../service/analytics.service';
@@ -18,6 +19,7 @@ describe('AnalyticsComponent', () => {
       providers: [
         MockProvider(AnalyticsService),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
   });

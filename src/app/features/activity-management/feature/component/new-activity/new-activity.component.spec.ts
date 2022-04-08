@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '@shared/shared.module';
 import { NewActivityComponent } from './new-activity.component';
 
 describe('NewActivityComponent', () => {
@@ -9,6 +11,11 @@ describe('NewActivityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         NewActivityComponent,
+      ],
+      imports: [
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
       ],
     })
       .compileComponents();

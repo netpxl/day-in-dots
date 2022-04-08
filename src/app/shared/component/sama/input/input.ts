@@ -1,6 +1,6 @@
 import {
   html, PropertyValues, unsafeCSS,
-} from 'lit-element';
+} from 'lit';
 import { css } from '@lion/core';
 import { LionInput } from '@lion/input';
 
@@ -47,7 +47,7 @@ export class SamaInput extends LionInput {
         `;
   }
 
-  inputHandler(event: any) {
+  inputHandler(event: { composedPath: () => { value: string; }[]; }) {
     this.dispatchEvent(
       new CustomEvent('val-change', {
         detail: event.composedPath()[0].value,

@@ -1,6 +1,6 @@
 import {
   html, css, unsafeCSS,
-} from 'lit-element';
+} from 'lit';
 import { LionButton } from '@lion/button';
 
 export class SamaButton extends LionButton {

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { MockProvider } from 'ng-mocks';
-import { ReplaySubject, take } from 'rxjs';
-import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
-import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
-import { DotInterface } from 'src/app/core/interface/dot.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
+import { AnalyticsInterface } from '@core/interface/analytics.interface';
+import { DayBoardInterface } from '@core/interface/day-board.interface';
+import { DotInterface } from '@core/interface/dot.interface';
+import { selectStateDotCalendar } from '@dot-calendar/data-access/store/dot-calendar.selectors';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { AnalyticsService } from './analytics.service';
 
@@ -26,7 +26,6 @@ function generateRandomDots(amount = 0) {
   const dots: DotInterface[] = [];
   for (let i = 0; i < amount; i++) {
     dots.push({
-      id: uuidv4(),
       activityId: uuidv4(),
       name: uuidv4(),
     });
@@ -36,7 +35,7 @@ function generateRandomDots(amount = 0) {
 
 describe('AnalyticsService', () => {
   let service: AnalyticsService;
-  let storeService: StoreService;
+  let store: MockStore;
   const mockDots: DotInterface[] = generateRandomDots(10);
   const dotCollection = new Map<string, AnalyticsInterface>();
   const mockBoard: DayBoardInterface = {
@@ -47,15 +46,20 @@ describe('AnalyticsService', () => {
     date: '',
   };
 
+  const initialState = {
+    dotCalendar: {
+      currentDotCalendar: mockBoard,
+    },
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        MockProvider(StoreService),
+        provideMockStore({ initialState }),
       ],
     });
     service = TestBed.inject(AnalyticsService);
-    storeService = TestBed.inject(StoreService);
-    storeService.config$ = new ReplaySubject();
+    store = TestBed.inject(MockStore);
   });
 
   it('should be created', () => {
@@ -63,16 +67,36 @@ describe('AnalyticsService', () => {
   });
 
   it('should have correct amount of data in results without duplicates', async () => {
+    store.overrideSelector(
+      selectStateDotCalendar,
+      { ...mockBoard, board: [mockDots] },
+    );
     service.prepareAnalyticData().pipe(take(1)).subscribe((result) => {
       expect(result.length).toEqual(10);
+      store.resetSelectors();
     });
     mockBoard.board = spreadDataAcrossArray(mockDots);
-    storeService.config$.next(mockBoard);
+  });
+
+  it('should dont do anything if config was not found', async () => {
+    store.overrideSelector(
+      selectStateDotCalendar,
+      undefined,
+    );
+    service.prepareAnalyticData().pipe(take(1)).subscribe((result) => {
+      expect(result.length).toEqual(0);
+      store.resetSelectors();
+    });
   });
 
   it('should have correct amount of data in results with duplicates', async () => {
+    store.overrideSelector(
+      selectStateDotCalendar,
+      { ...mockBoard, board: [[...mockDots.slice(0, 2), mockDots[3], mockDots[3]]] },
+    );
     service.prepareAnalyticData().pipe(take(1)).subscribe((result) => {
       expect(result.length).toEqual(3);
+      store.resetSelectors();
     });
 
     mockBoard.board = spreadDataAcrossArray(
@@ -84,7 +108,6 @@ describe('AnalyticsService', () => {
         mockDots[5],
       ],
     );
-    storeService.config$.next(mockBoard);
   });
 
   it('should add dots correctly', () => {

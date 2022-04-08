@@ -1,5 +1,5 @@
+import { ActivityInterface } from '@core/interface/activity.interface';
 import { createAction, props } from '@ngrx/store';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
 
 export const loadActivities = createAction(
   '[ActivityManagment] Load Activities',
@@ -16,28 +16,28 @@ export const loadActivitiesFailure = createAction(
 );
 
 export const createActivity = createAction(
-  '[ActivityManagment] Create Activities',
-  props<{ activity: ActivityInterface }>(),
+  '[ActivityManagment] Create Activity',
+  props<{ activity: Omit<ActivityInterface, 'id'> }>(),
 );
 
 export const createActivitySuccess = createAction(
-  '[ActivityManagment] create Activity Success',
-  props<{ activities: ActivityInterface[] }>(),
+  '[ActivityManagment] Create Activity Success',
+  props<{ activities: ActivityInterface[], currentlySelected?: ActivityInterface }>(),
 );
 
 export const createActivityFailure = createAction(
-  '[ActivityManagment] Load Activity Failure',
+  '[ActivityManagment] Create Activity Failure',
   props<{ error: string }>(),
 );
 
 export const updateActivity = createAction(
-  '[ActivityManagment] Update Activities',
+  '[ActivityManagment] Update Activity',
   props<{ activity: ActivityInterface }>(),
 );
 
 export const updateActivitySuccess = createAction(
   '[ActivityManagment] Update Activity Success',
-  props<{ activities: ActivityInterface[] }>(),
+  props<{ activities: ActivityInterface[], currentlySelected?: ActivityInterface }>(),
 );
 
 export const updateActivityFailure = createAction(
@@ -46,16 +46,26 @@ export const updateActivityFailure = createAction(
 );
 
 export const deleteActivity = createAction(
-  '[ActivityManagment] Delete Activities',
+  '[ActivityManagment] Delete Activity',
   props<{ activity: ActivityInterface }>(),
 );
 
 export const deleteActivitySuccess = createAction(
   '[ActivityManagment] Delete Activity Success',
-  props<{ activities: ActivityInterface[] }>(),
+  props<{ activities: ActivityInterface[], currentlySelected?: ActivityInterface }>(),
 );
 
 export const deleteActivityFailure = createAction(
   '[ActivityManagment] Delete Activity Failure',
   props<{ error: string }>(),
+);
+
+export const setCurrentlySelectedActivity = createAction(
+  '[ActivityManagment] Set Currently Selected Activity',
+  props<{ currentlySelectedActivity?: ActivityInterface | undefined }>(),
+);
+
+export const unselectIfCurrentlySelectedActivity = createAction(
+  '[ActivityManagment] Unselect Activity if Currently Selected Activity',
+  props<{ currentlySelectedActivity?: ActivityInterface | undefined }>(),
 );

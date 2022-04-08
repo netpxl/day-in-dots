@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { ChartTypeEnum } from '@core/enum/ChartType.enum';
+import { AnalyticsInterface } from '@core/interface/analytics.interface';
 import { Observable } from 'rxjs';
-import { ChartTypeEnum } from 'src/app/core/enum/ChartType.enum';
-import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
 import { AnalyticsService } from '../../service/analytics.service';
 
 @Component({

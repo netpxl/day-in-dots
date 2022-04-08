@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { AnalyticsInterface } from '@core/interface/analytics.interface';
+import { DotInterface } from '@core/interface/dot.interface';
+import { selectStateDotCalendar } from '@dot-calendar/data-access/store/dot-calendar.selectors';
+import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
-import { DotInterface } from 'src/app/core/interface/dot.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AnalyticsService {
-  constructor(private readonly storeService: StoreService) { }
+  constructor(private readonly store: Store) { }
 
   prepareAnalyticData(): Observable<AnalyticsInterface[]> {
-    return this.storeService.config$.pipe(map((config) => {
+    return this.store.select(selectStateDotCalendar).pipe(map((config) => {
       if (!config) {
         return [];
       }

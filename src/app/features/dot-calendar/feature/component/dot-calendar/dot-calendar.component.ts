@@ -1,57 +1,72 @@
 import {
-  Component, HostBinding, OnInit,
+  selectStateActivities,
+  selectStateCurrentlySelectedActivity,
+} from '@activity-management/data-access/store/activity-management.selectors';
+import {
+  Component, OnDestroy, OnInit, HostBinding,
 } from '@angular/core';
-import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
-import { DotCalendarService } from '../../service/dot-calendar.service';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { DayBoardInterface } from '@core/interface/day-board.interface';
+import { loadDotCalendar, reloadDotCalendar, saveDotCalendar } from '@dot-calendar/data-access/store/dot-calendar.actions';
+import { selectStateDotCalendar } from '@dot-calendar/data-access/store/dot-calendar.selectors';
+import { Store } from '@ngrx/store';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'did-dot-calendar',
   templateUrl: './dot-calendar.component.html',
   styleUrls: ['./dot-calendar.component.scss'],
 })
-export class DotCalendarComponent implements OnInit {
+export class DotCalendarComponent implements OnDestroy, OnInit {
   @HostBinding('style.--__columns') columns = 4;
 
   config?: DayBoardInterface;
 
   private _currentDate = '';
 
+  private _currentlySelectedActivity?: ActivityInterface | undefined;
+
+  private destroy$ = new ReplaySubject<boolean>();
+
   constructor(
-    private readonly dotCalendarService: DotCalendarService,
-    private readonly storeService: StoreService,
+    private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
-    this.storeService.config$.subscribe((response) => {
+    this.store.dispatch(loadDotCalendar({ requestedDate: this._currentDate }));
+    this.store.select(selectStateActivities).subscribe((activities) => {
+      this.store.dispatch(reloadDotCalendar({ activities }));
+    });
+
+    this.store.select(selectStateDotCalendar).subscribe((response) => {
       this.config = response || undefined;
       if (!this.config) {
-        this.config = this.dotCalendarService.generateNewDayBoard(this._currentDate);
+        this.store.dispatch(loadDotCalendar({ requestedDate: this._currentDate }));
+        return;
       }
-      this.columns = this.config?.slots.length;
+      this.columns = this.config?.slots?.length;
+    });
+
+    this.store.select(selectStateCurrentlySelectedActivity).pipe(
+      takeUntil(this.destroy$),
+    ).subscribe((activity) => {
+      this._currentlySelectedActivity = activity;
     });
   }
 
   onDateChanged(date: string) {
     this._currentDate = date;
-    this.storeService.loadDotCalendar(date);
+    this.store.dispatch(loadDotCalendar({ requestedDate: date }));
   }
 
-  handleClickedDot(firstIndex: string | number, secondIndex: string | number) {
-    if (typeof firstIndex === 'string') {
-      firstIndex = parseInt(firstIndex, 10);
-    }
-
-    if (typeof secondIndex === 'string') {
-      secondIndex = parseInt(secondIndex, 10);
-    }
+  handleClickedDot(firstIndex: number, secondIndex: number) {
     if (!this.config) {
       return;
     }
 
     if (
-      !this.storeService.currentlySelectedActivitiy
-      || this.config.board[firstIndex][secondIndex].activityId === this.storeService.currentlySelectedActivitiy.id
+      !this._currentlySelectedActivity
+      || this.config.board[firstIndex][secondIndex].activityId === this._currentlySelectedActivity?.id
     ) {
       this._unselectClickedDot(firstIndex, secondIndex);
       return;
@@ -61,25 +76,31 @@ export class DotCalendarComponent implements OnInit {
   }
 
   private _colorAsCurrentlySelected(firstIndex: number, secondIndex: number) {
-    if (!this.config || !this.storeService.currentlySelectedActivitiy) {
+    if (!this.config || !this._currentlySelectedActivity) {
       return;
     }
 
-    this.config.board[firstIndex][secondIndex] = {
-      id: this.config.board[firstIndex][secondIndex].id,
-      activityId: this.storeService.currentlySelectedActivitiy.id,
-      name: this.storeService.currentlySelectedActivitiy.name,
-      color: this.storeService.currentlySelectedActivitiy.color,
+    const newConfig = JSON.parse(JSON.stringify(this.config));
+    newConfig.board[firstIndex][secondIndex] = {
+      activityId: this._currentlySelectedActivity.id,
+      name: this._currentlySelectedActivity.name,
+      color: this._currentlySelectedActivity.color,
     };
-    this.storeService.persistDataIntoLocalStorage(this.config);
+    this.store.dispatch(saveDotCalendar({ dotCalendar: newConfig }));
   }
 
   private _unselectClickedDot(firstIndex: number, secondIndex: number) {
     if (!this.config) {
       return;
     }
-    delete this.config.board[firstIndex][secondIndex].activityId;
-    delete this.config.board[firstIndex][secondIndex].color;
-    this.storeService.persistDataIntoLocalStorage(this.config);
+    const newConfig = JSON.parse(JSON.stringify(this.config));
+    delete newConfig.board[firstIndex][secondIndex].activityId;
+    delete newConfig.board[firstIndex][secondIndex].color;
+    this.store.dispatch(saveDotCalendar({ dotCalendar: newConfig }));
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 }

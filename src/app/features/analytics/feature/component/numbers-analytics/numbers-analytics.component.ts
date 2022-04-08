@@ -1,7 +1,7 @@
 import {
   Component, Input,
 } from '@angular/core';
-import { AnalyticsInterface } from 'src/app/core/interface/analytics.interface';
+import { AnalyticsInterface } from '@core/interface/analytics.interface';
 
 @Component({
   selector: 'did-numbers-analytics',

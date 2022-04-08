@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
-import { ActivitymanagementState } from '../../../data-access/activity-management.reducer';
-import { selectStateActivities } from '../../../data-access/activity-management.selectors';
+import { ActivityManagementState } from '@activity-management/data-access/store/activity-management.reducer';
 import {
-  createActivity, deleteActivity, loadActivities, updateActivity,
-} from '../../../data-access/activity-managment.actions';
+  selectStateActivities,
+  selectStateCurrentlySelectedActivity,
+} from '@activity-management/data-access/store/activity-management.selectors';
+import { Component, OnInit } from '@angular/core';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import {
+  loadActivities, createActivity, setCurrentlySelectedActivity, deleteActivity, updateActivity,
+} from '../../../data-access/store/activity-managment.actions';
 
 @Component({
   selector: 'did-activity-managment',
@@ -16,39 +19,33 @@ import {
 export class ActivityManagmentComponent implements OnInit {
   activities: ActivityInterface[] = [];
 
+  currentlySelectedActivity$?: Observable<ActivityInterface | undefined>;
+
   constructor(
-    readonly storeService: StoreService,
-    readonly store: Store<ActivitymanagementState>,
+    readonly store: Store<ActivityManagementState>,
   ) {}
 
   ngOnInit(): void {
     this.store.select(selectStateActivities).subscribe((activities) => {
       this.activities = activities;
     });
+    this.currentlySelectedActivity$ = this.store.select(selectStateCurrentlySelectedActivity);
     this.store.dispatch(loadActivities());
   }
 
-  onNewActivityAdded(activity: ActivityInterface): void {
+  onNewActivityAdded(activity: Omit<ActivityInterface, 'id'>): void {
     this.store.dispatch(createActivity({ activity }));
   }
 
-  setAsSelectedActivity(activity?: ActivityInterface | undefined): void {
-    if (this.storeService.currentlySelectedActivitiy?.id === activity?.id) {
-      this.storeService.setCurrentlySelectedActivity(undefined);
-      return;
-    }
-    this.storeService.setCurrentlySelectedActivity(activity);
+  setAsSelectedActivity(currentlySelectedActivity?: ActivityInterface | undefined): void {
+    this.store.dispatch(setCurrentlySelectedActivity({ currentlySelectedActivity }));
   }
 
   onDeleteActivity(activity: ActivityInterface): void {
-    if (this.storeService.currentlySelectedActivitiy?.id === activity.id) {
-      this.setAsSelectedActivity(undefined);
-    }
     this.store.dispatch(deleteActivity({ activity }));
   }
 
   onUpdateActivity(activity: ActivityInterface): void {
-    this.setAsSelectedActivity(activity);
     this.store.dispatch(updateActivity({ activity }));
   }
 }

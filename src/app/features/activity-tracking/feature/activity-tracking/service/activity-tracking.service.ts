@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { DotInterface } from 'src/app/core/interface/dot.interface';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { DotInterface } from '@core/interface/dot.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +67,6 @@ export class ActivityTrackingService {
       )
     ) {
       this._activityTrack.push({
-        id: '',
         color: this._currentActivity.activity.color,
         name: this._currentActivity.activity.name,
         hour: beginningTimeslot.hour,

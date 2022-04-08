@@ -1,29 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
-import { ActivityTrackingService } from '../../service/activity-tracking.service';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'did-activity-tracking-modal',
   templateUrl: './activity-tracking-modal.component.html',
   styleUrls: ['./activity-tracking-modal.component.scss'],
 })
-export class ActivityTrackingModalComponent implements OnInit {
+export class ActivityTrackingModalComponent {
   currentActivity = new FormControl();
 
   listOfActivities: ActivityInterface[] = [];
 
   stopTracking$: ReplaySubject<boolean> = new ReplaySubject();
-
+/**
   constructor(
-    private storeService: StoreService,
+    private store: Store,
     private activityTrackingService: ActivityTrackingService,
   ) {}
 
   ngOnInit() {
-    this.storeService.getActivities().subscribe((response) => {
+    this.store.select(selectStateActivities).subscribe((response) => {
       if (!response?.length) {
         this.listOfActivities = [];
         return;
@@ -50,4 +48,5 @@ export class ActivityTrackingModalComponent implements OnInit {
   closeModal() {
 
   }
+   */
 }

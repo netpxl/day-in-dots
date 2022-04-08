@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { v4 as uuidv4 } from 'uuid';
+import { ActivityInterface } from '@core/interface/activity.interface';
 
 @Component({
   selector: 'did-new-activity',
@@ -15,17 +14,15 @@ export class NewActivityComponent {
   });
 
   @Output()
-    newActivityAdded: EventEmitter<ActivityInterface> = new EventEmitter<ActivityInterface>();
+    newActivityAdded: EventEmitter<Omit<ActivityInterface, 'id'>> = new EventEmitter<Omit<ActivityInterface, 'id'>>();
 
   addNewActivity() {
     if (this.newActivityForm.invalid) {
       return;
     }
 
-    const id = uuidv4();
     const { color, name } = this.newActivityForm.value;
     this.newActivityAdded.emit({
-      id,
       color,
       name,
     });

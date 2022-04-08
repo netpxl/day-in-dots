@@ -1,11 +1,14 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockProvider } from 'ng-mocks';
-import { ReplaySubject } from 'rxjs';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { DayBoardInterface } from 'src/app/core/interface/day-board.interface';
-import { DotInterface } from 'src/app/core/interface/dot.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
-import { DotCalendarService } from '../../service/dot-calendar.service';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { DayBoardInterface } from '@core/interface/day-board.interface';
+import { DotInterface } from '@core/interface/dot.interface';
+import { StoreService } from '@dot-calendar/data-access/service/store.service.abstract';
+import { loadDotCalendar, saveDotCalendar } from '@dot-calendar/data-access/store/dot-calendar.actions';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { MockComponent, MockProvider } from 'ng-mocks';
+import { of } from 'rxjs';
+import { DotCalendarService } from '../../../data-access/service/dot-calendar.service';
 import { DatepickerComponent } from '../datepicker/datepicker.component';
 
 import { DotCalendarComponent } from './dot-calendar.component';
@@ -13,27 +16,27 @@ import { DotCalendarComponent } from './dot-calendar.component';
 describe('DotCalendarComponent', () => {
   let component: DotCalendarComponent;
   let fixture: ComponentFixture<DotCalendarComponent>;
-  let storeService: StoreService;
+  let store: MockStore;
   let dotCalendarService: DotCalendarService;
-  const configSubject: ReplaySubject<DayBoardInterface | undefined> = new ReplaySubject();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DotCalendarComponent, DatepickerComponent],
+      declarations: [DotCalendarComponent, MockComponent(DatepickerComponent)],
       providers: [
         MockProvider(StoreService),
         MockProvider(DotCalendarService),
+        provideMockStore(),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DotCalendarComponent);
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    storeService = TestBed.inject(StoreService);
     dotCalendarService = TestBed.inject(DotCalendarService);
-    storeService.config$ = configSubject;
     fixture.detectChanges();
   });
 
@@ -41,29 +44,23 @@ describe('DotCalendarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create new calendar if config is empty', () => {
-    dotCalendarService.generateNewDayBoard = jasmine.createSpy().and.callFake(() => ({ id: 'test' } as any as DayBoardInterface));
-    configSubject.next(undefined);
-    expect(dotCalendarService.generateNewDayBoard).toHaveBeenCalled();
-    expect(component.config?.id).toBe('test');
-  });
-
   it('should set calendar if config is not empty', () => {
     dotCalendarService.generateNewDayBoard = jasmine.createSpy().and.callThrough();
-    configSubject.next({ id: 'testFromConfig', slots: [0], hours: [0] } as any as DayBoardInterface);
+    spyOn(store, 'select').and.returnValue(of({ id: 'testFromConfig' }));
+    component.ngOnInit();
     expect(dotCalendarService.generateNewDayBoard).not.toHaveBeenCalled();
     expect(component.config?.id).toBe('testFromConfig');
   });
 
   it('should init new board load on changed date', () => {
-    const storeDateSpy = spyOn(storeService, 'loadDotCalendar').and.callFake(() => {});
+    const storeDateSpy = spyOn(store, 'dispatch').and.callFake(() => {});
     component.onDateChanged('12-12-2012');
-    expect(storeDateSpy).toHaveBeenCalledOnceWith('12-12-2012');
+    expect(storeDateSpy).toHaveBeenCalledOnceWith(loadDotCalendar({ requestedDate: '12-12-2012' }));
     expect((component as any)._currentDate).toEqual('12-12-2012');
   });
 
   it('should ignore clicks if config is not found', () => {
-    storeService.currentlySelectedActivitiy = undefined;
+    (component as any)._currentlySelectedActivity = undefined;
     component.config = undefined;
 
     component.handleClickedDot(0, 0);
@@ -71,54 +68,68 @@ describe('DotCalendarComponent', () => {
   });
 
   it('should unselected clicked dot if no activity selected', () => {
-    storeService.currentlySelectedActivitiy = undefined;
+    const storeBoardSpy = spyOn(store, 'dispatch').and.callFake(() => {});
+    (component as any)._currentlySelectedActivity = undefined;
     component.config = {
       hours: [0],
       slots: [0],
       board: { 0: { 0: { color: 'test', activityId: 'test' } as DotInterface } },
     } as any as DayBoardInterface;
 
+    const resultConfig = JSON.parse(JSON.stringify(component.config));
+    delete resultConfig.board[0][0].color;
+    delete resultConfig.board[0][0].activityId;
     component.handleClickedDot(0, 0);
-    expect(component.config?.board[0][0].activityId).toBeFalsy();
-    expect(component.config?.board[0][0].color).toBeFalsy();
+    expect(storeBoardSpy).toHaveBeenCalledOnceWith(saveDotCalendar({ dotCalendar: resultConfig }));
   });
 
   it('should unselected clicked dot if selected activity is same as clicked', () => {
-    storeService.currentlySelectedActivitiy = { color: 'test', id: 'test' } as any as ActivityInterface;
+    const storeBoardSpy = spyOn(store, 'dispatch').and.callFake(() => {});
+    (component as any)._currentlySelectedActivity = { color: 'test', id: 'test' } as any as ActivityInterface;
     component.config = {
       hours: [0],
       slots: [0],
       board: { 0: { 0: { color: 'test', activityId: 'test' } as DotInterface } },
     } as any as DayBoardInterface;
 
+    const resultConfig = JSON.parse(JSON.stringify(component.config));
+    delete resultConfig.board[0][0].color;
+    delete resultConfig.board[0][0].activityId;
     component.handleClickedDot(0, 0);
-    expect(component.config?.board[0][0].activityId).toBeFalsy();
-    expect(component.config?.board[0][0].color).toBeFalsy();
+    expect(storeBoardSpy).toHaveBeenCalledOnceWith(saveDotCalendar({ dotCalendar: resultConfig }));
   });
 
   it('should select clicked dot', () => {
-    storeService.currentlySelectedActivitiy = { color: 'test', id: 'test' } as any as ActivityInterface;
+    const storeBoardSpy = spyOn(store, 'dispatch').and.callFake(() => {});
+    (component as any)._currentlySelectedActivity = { color: 'test', id: 'test' } as any as ActivityInterface;
     component.config = {
       hours: [0, 1],
       slots: [0, 1],
-      board: { 0: { 0: { id: '' } as DotInterface } },
+      board: { 0: { 0: { } as DotInterface } },
     } as any as DayBoardInterface;
 
+    const resultConfig = JSON.parse(JSON.stringify(component.config));
+    resultConfig.board[0][0].color = 'test';
+    resultConfig.board[0][0].activityId = 'test';
+    resultConfig.board[0][0].name = undefined;
     component.handleClickedDot(0, 0);
-    expect(component.config?.board[0][0].activityId).toBe('test');
-    expect(component.config?.board[0][0].color).toBe('test');
+    expect(storeBoardSpy).toHaveBeenCalledOnceWith(saveDotCalendar({ dotCalendar: resultConfig }));
   });
 
   it('should overwrite clicked dot', () => {
-    storeService.currentlySelectedActivitiy = { color: 'test', id: 'test' } as any as ActivityInterface;
+    const storeBoardSpy = spyOn(store, 'dispatch').and.callFake(() => {});
+    (component as any)._currentlySelectedActivity = { color: 'test', id: 'test' } as any as ActivityInterface;
     component.config = {
       hours: [0],
       slots: [0],
       board: { 0: { 0: { color: 'test2', activityId: 'test2' } as DotInterface } },
     } as any as DayBoardInterface;
 
+    const resultConfig = JSON.parse(JSON.stringify(component.config));
+    resultConfig.board[0][0].color = 'test';
+    resultConfig.board[0][0].activityId = 'test';
+    resultConfig.board[0][0].name = undefined;
     component.handleClickedDot(0, 0);
-    expect(component.config?.board[0][0].activityId).toBe('test');
-    expect(component.config?.board[0][0].color).toBe('test');
+    expect(storeBoardSpy).toHaveBeenCalledOnceWith(saveDotCalendar({ dotCalendar: resultConfig }));
   });
 });

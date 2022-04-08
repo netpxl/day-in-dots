@@ -1,33 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockProvider } from 'ng-mocks';
-import { of, ReplaySubject } from 'rxjs';
-import { ActivityInterface } from 'src/app/core/interface/activity.interface';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
+import { Subject } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
+import { selectStateActivities } from '@activity-management/data-access/store/activity-management.selectors';
+import {
+ createActivity, deleteActivity, setCurrentlySelectedActivity, updateActivity 
+} from '@activity-management/data-access/store/activity-managment.actions';
+import { ActivityInterface } from '@core/interface/activity.interface';
+import { MockComponent } from 'ng-mocks';
 import { ActivityManagmentComponent } from './activity-managment.component';
+import { SingleActivityComponent } from '../single-activity/single-activity.component';
+import { NewActivityComponent } from '../new-activity/new-activity.component';
 
 describe('ActivityManagmentComponent', () => {
   let component: ActivityManagmentComponent;
   let fixture: ComponentFixture<ActivityManagmentComponent>;
-  let storeService: StoreService;
+  let store: MockStore;
+  const selectedActivitySubject = new Subject<ActivityInterface | undefined>();
+
   const mockActivity = { id: '6553535' } as ActivityInterface;
-  const getActivityReturnMock: ReplaySubject<ActivityInterface[]> = new ReplaySubject();
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        MockProvider(StoreService),
+        provideMockStore(),
       ],
-      declarations: [ActivityManagmentComponent],
+      declarations: [
+        ActivityManagmentComponent,
+        MockComponent(SingleActivityComponent),
+        MockComponent(NewActivityComponent),
+      ],
     })
       .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ActivityManagmentComponent);
-    storeService = TestBed.inject(StoreService);
+    store = TestBed.inject(MockStore);
     component = fixture.componentInstance;
-    spyOn(storeService, 'getActivities').and.returnValue(getActivityReturnMock.asObservable());
+
+    component.currentlySelectedActivity$ = selectedActivitySubject;
     fixture.detectChanges();
   });
 
@@ -37,54 +49,54 @@ describe('ActivityManagmentComponent', () => {
 
   it('should listen to store changes and update activity', async () => {
     component.activities = [];
-    getActivityReturnMock.next([{ color: 'red' } as ActivityInterface, { color: 'red' } as ActivityInterface]);
+    store.overrideSelector(
+      selectStateActivities,
+      [{ color: 'red' } as ActivityInterface, { color: 'red' } as ActivityInterface],
+    );
+    component.ngOnInit();
+    store.resetSelectors();
     expect(component.activities.length).toBe(2);
   });
 
-  it('should send new activity to storage and set it as currently selected', () => {
-    const saveSpy = spyOn(storeService, 'saveActivity').and.returnValue(of([mockActivity]));
-    const currentlySelectedSpy = spyOn(storeService, 'setCurrentlySelectedActivity');
+  it('should send new activity to storage', () => {
+    const currentlySelectedSpy = spyOn(store, 'dispatch').and.callFake(() => {});
     component.onNewActivityAdded(mockActivity);
-    expect(saveSpy).toHaveBeenCalledOnceWith(mockActivity);
-    expect(currentlySelectedSpy).toHaveBeenCalledOnceWith(mockActivity);
+    expect(currentlySelectedSpy).toHaveBeenCalledOnceWith(createActivity({ activity: mockActivity }));
   });
 
-  it('should send deleted activity to storage and update list', () => {
+  it('should send deleted activity to storage', () => {
+    selectedActivitySubject.next(mockActivity);
     const deletedActivity = { ...mockActivity, id: '12345' };
-    component.activities = [mockActivity, deletedActivity];
-    storeService.currentlySelectedActivitiy = mockActivity;
-    const deleteSpy = spyOn(storeService, 'deleteActivity').and.returnValue(of([mockActivity]));
-    const currentlySelectedSpy = spyOn(storeService, 'setCurrentlySelectedActivity');
+    const deleteSpy = spyOn(store, 'dispatch').and.returnValue();
 
     component.onDeleteActivity(deletedActivity);
-    expect(deleteSpy).toHaveBeenCalledOnceWith(deletedActivity);
-    expect(currentlySelectedSpy).not.toHaveBeenCalled();
-    expect(component.activities.length).toEqual(1);
+    expect(deleteSpy).toHaveBeenCalledOnceWith(deleteActivity({ activity: deletedActivity }));
   });
 
-  it('should send deleted activity to storage and update list, unselect deleted if selected', () => {
-    const deletedActivity = { ...mockActivity, id: '12345' };
-    component.activities = [mockActivity, deletedActivity];
-    storeService.currentlySelectedActivitiy = deletedActivity;
-    const deleteSpy = spyOn(storeService, 'deleteActivity').and.returnValue(of([mockActivity]));
-    const currentlySelectedSpy = spyOn(storeService, 'setCurrentlySelectedActivity');
-
-    component.onDeleteActivity(deletedActivity);
-    expect(deleteSpy).toHaveBeenCalledOnceWith(deletedActivity);
-    expect(currentlySelectedSpy).toHaveBeenCalledOnceWith(undefined);
-    expect(component.activities.length).toEqual(1);
-  });
-
-  it('should send updated activity to storage and update list, set as currently active', () => {
+  it('should send updated activity to storage', () => {
+    selectedActivitySubject.next(mockActivity);
     const editedActivity = { ...mockActivity, id: '12345' };
-    component.activities = [mockActivity, editedActivity];
-    storeService.currentlySelectedActivitiy = mockActivity;
-    const deleteSpy = spyOn(storeService, 'updateActivity').and.returnValue(of([mockActivity, editedActivity]));
-    const currentlySelectedSpy = spyOn(storeService, 'setCurrentlySelectedActivity');
+    const deleteSpy = spyOn(store, 'dispatch').and.returnValue();
 
     component.onUpdateActivity(editedActivity);
-    expect(deleteSpy).toHaveBeenCalledOnceWith(editedActivity);
-    expect(currentlySelectedSpy).toHaveBeenCalledOnceWith(editedActivity);
-    expect(component.activities.length).toEqual(2);
+    expect(deleteSpy).toHaveBeenCalledOnceWith(updateActivity({ activity: editedActivity }));
+  });
+
+  it('should send selected activity to storage', () => {
+    selectedActivitySubject.next(mockActivity);
+    const newActivity = { ...mockActivity, id: '12345' };
+    const selectionDispatchSoy = spyOn(store, 'dispatch').and.returnValue();
+
+    component.setAsSelectedActivity(newActivity);
+    expect(selectionDispatchSoy).toHaveBeenCalledOnceWith(setCurrentlySelectedActivity({ currentlySelectedActivity: newActivity }));
+  });
+
+  it('should send selected activity to storage', () => {
+    selectedActivitySubject.next(mockActivity);
+    const newActivity = undefined;
+    const selectionDispatchSoy = spyOn(store, 'dispatch').and.returnValue();
+
+    component.setAsSelectedActivity(newActivity);
+    expect(selectionDispatchSoy).toHaveBeenCalledOnceWith(setCurrentlySelectedActivity({ currentlySelectedActivity: newActivity }));
   });
 });

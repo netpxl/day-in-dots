@@ -1,4 +1,7 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DotComponent } from '@shared/component/dot/dot.component';
+import { MockComponent } from 'ng-mocks';
 
 import { SingleActivityComponent } from './single-activity.component';
 
@@ -10,7 +13,9 @@ describe('SingleActivityComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         SingleActivityComponent,
+        MockComponent(DotComponent),
       ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
   });

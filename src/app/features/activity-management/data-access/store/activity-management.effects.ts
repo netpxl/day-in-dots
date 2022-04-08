@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   catchError, map, mergeMap, of,
 } from 'rxjs';
-import { StoreService } from 'src/app/shared/services/store.service.abstract';
+import { StoreService } from '../service/store.service.abstract';
 import * as ActivityManagementActions from './activity-managment.actions';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class ActivityManagementEffects {
       ofType(ActivityManagementActions.createActivity),
       mergeMap((payload) => this.storageService.saveActivity(payload.activity).pipe(
         map(
-          (activities) => (ActivityManagementActions.createActivitySuccess({ activities })),
+          ({ activities, currentlySelected }) => (ActivityManagementActions.createActivitySuccess({ activities, currentlySelected })),
           catchError((error) => of(ActivityManagementActions.createActivityFailure({ error }))),
         ),
       )),
@@ -33,7 +33,7 @@ export class ActivityManagementEffects {
     .pipe(
       ofType(ActivityManagementActions.updateActivity),
       mergeMap((payload) => this.storageService.updateActivity(payload.activity).pipe(
-        map((activities) => (ActivityManagementActions.updateActivitySuccess({ activities }))),
+        map(({ activities, currentlySelected }) => (ActivityManagementActions.updateActivitySuccess({ activities, currentlySelected }))),
         catchError((error) => of(ActivityManagementActions.updateActivityFailure({ error }))),
       )),
     ));
@@ -42,7 +42,7 @@ export class ActivityManagementEffects {
     .pipe(
       ofType(ActivityManagementActions.deleteActivity),
       mergeMap((payload) => this.storageService.deleteActivity(payload.activity).pipe(
-        map((activities) => (ActivityManagementActions.deleteActivitySuccess({ activities }))),
+        map(({ activities, currentlySelected }) => (ActivityManagementActions.deleteActivitySuccess({ activities, currentlySelected }))),
         catchError((error) => of(ActivityManagementActions.deleteActivityFailure({ error }))),
       )),
     ));
